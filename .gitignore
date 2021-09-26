@@ -118,3 +118,5 @@ dist
 .pnp.*
 
 *.tar.gz
+
+.DS_Store
