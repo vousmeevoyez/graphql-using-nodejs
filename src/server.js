@@ -1,8 +1,24 @@
-// we use node 12 and doesn't support es module import unless we turn
-// "type": "module" and --experimental-module but for some reason it still doesn't work
-// so we just use require syntax
 const apollo = require("apollo-server");
 const { ApolloServer, gql } = apollo;
+
+// this is fake representation of database pizza topping record
+// on the production environment you probably want real data from database
+const pizzaToppings = [
+  {id: 1, topping: "Cheesy"}
+]
+
+// this is fake representation of database record
+// on the production environment you probably want real data from database
+const pizzas = [
+  {id: 1, pizza: "Neapolitan Pizza", toppings: pizzaToppings},
+  {id: 2, pizza: "Chicago Pizza", toppings: pizzaToppings},
+  {id: 3, pizza: "New York-Style Pizza", toppings: pizzaToppings},
+  {id: 4, pizza: "Sicilian Pizza", toppings: pizzaToppings},
+  {id: 5, pizza: "Greek Pizza", toppings: pizzaToppings},
+  {id: 6, pizza: "California Pizza", toppings: pizzaToppings},
+  {id: 7, pizza: "Detroit Pizza", toppings: pizzaToppings},
+  {id: 8, pizza: "St. Louis Pizza", toppings: pizzaToppings},
+]
 
 const server = new ApolloServer({
   playground: true,
@@ -20,13 +36,19 @@ const server = new ApolloServer({
     }
 
     type Query {
-      pizzas: [Pizza!]!
+      pizzas(name: String): [Pizza]
+      pizza(id: Int): Pizza!
     }
   `,
   resolvers: {
     Query: {
       pizzas: (parent, args, context) => {
-        const pizzas = [{id: 1, pizza: "Detroit Pizza", toppings: [{id: 1, topping: "Cheesy"}]}]
+        const { name } = args;
+        if(name){
+          // this is fake implementation of simple string matching
+          // on production environment you would want to query from real database!
+          return [pizzas.find(({pizza})=> pizza === name)];
+        }
         return pizzas
       },
     },
