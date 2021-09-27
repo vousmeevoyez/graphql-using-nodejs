@@ -51,6 +51,15 @@ const server = new ApolloServer({
         }
         return pizzas
       },
+      pizza: (parent, args, context) => {
+        const { id } = args;
+        if(id){
+          // this is fake implementation of simple id matching
+          // on production environment you would want to query from real database!
+          return pizzas.find(({id: pizzaId})=> pizzaId === id);
+        }
+        return undefined
+      },
     },
   },
 });
