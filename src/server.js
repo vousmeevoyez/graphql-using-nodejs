@@ -10,25 +10,32 @@ const pizzaToppings = [
 // this is fake representation of database record
 // on the production environment you probably want real data from database
 const pizzas = [
-  {id: 1, pizza: "Neapolitan Pizza", toppings: pizzaToppings},
-  {id: 2, pizza: "Chicago Pizza", toppings: pizzaToppings},
-  {id: 3, pizza: "New York-Style Pizza", toppings: pizzaToppings},
-  {id: 4, pizza: "Sicilian Pizza", toppings: pizzaToppings},
-  {id: 5, pizza: "Greek Pizza", toppings: pizzaToppings},
-  {id: 6, pizza: "California Pizza", toppings: pizzaToppings},
-  {id: 7, pizza: "Detroit Pizza", toppings: pizzaToppings},
-  {id: 8, pizza: "St. Louis Pizza", toppings: pizzaToppings},
+  {id: 1, pizza: "Neapolitan Pizza", toppings: pizzaToppings, status: "AVAILABLE"},
+  {id: 2, pizza: "Chicago Pizza", toppings: pizzaToppings, status: "COOKING"},
+  {id: 3, pizza: "New York-Style Pizza", toppings: pizzaToppings, status: "UNAVAILABLE"},
+  {id: 4, pizza: "Sicilian Pizza", toppings: pizzaToppings, status: "AVAILABLE"},
+  {id: 5, pizza: "Greek Pizza", toppings: pizzaToppings, status: "COOKING"},
+  {id: 6, pizza: "California Pizza", toppings: pizzaToppings, status: "UNAVAILABLE"},
+  {id: 7, pizza: "Detroit Pizza", toppings: pizzaToppings, status: "COOKING"},
+  {id: 8, pizza: "St. Louis Pizza", toppings: pizzaToppings, status: "AVAILABLE"},
 ]
 
 const server = new ApolloServer({
   playground: true,
   typeDefs: gql`
+    enum PizzaStatus {
+      AVAILABLE,
+      COOKING
+      UNAVAILABLE
+    }
+
     # Schema Type
     type Pizza {
       id: Int!
       pizza: String!
       stock: Int!
       toppings: [Topping!]!
+      status: PizzaStatus!
     }
 
     type Topping {
