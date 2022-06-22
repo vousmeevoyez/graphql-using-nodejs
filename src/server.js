@@ -49,7 +49,7 @@ const server = new ApolloServer({
 
 
     type Query {
-      pizzas(pizza: String): [Pizza]
+      pizzas(pizza: String, first: Int): [Pizza]
       pizza(id: Int): Pizza!
     }
 
@@ -61,11 +61,14 @@ const server = new ApolloServer({
   resolvers: {
     Query: {
       pizzas: (parent, args, context) => {
-        const { name } = args;
+        const { name, first } = args;
         if(name){
           // this is fake implementation of simple string matching
           // on production environment you would want to query from real database!
           return [pizzas.find(({pizza})=> pizza === name)];
+        }
+        if(first){
+          return pizzas.slice(0, first)
         }
         return pizzas
       },
